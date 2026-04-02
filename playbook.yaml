@@ -145,4 +145,23 @@
       become_user: www-data
       when: not drupal_composer_json.stat.exists
 
-    
+    # Install Drupal with Drush
+    - name: Add drush to the Drupal site with Composer
+      composer:
+        command: require
+        arguments: drush/drush:11.*
+        working_dir: "{{ drupal_core_path }}"
+      become_user: www-data
+      when: not drupal_composer_json.stat.exists
+
+    - name: Install Drupal
+      command: >
+        vendor/bin/drush si -y --site-name="{{ drupal_site_name }}"
+        --account-name=admin
+        --account-pass=admin
+        --db-url=mysql://{{ domain }}:1234@localhost/{{ domain }}
+        --root={{ drupal_core_path }}/web
+        chdir={{ drupal_core_path }}
+        creates={{ drupal_core_path }}/web/sites/default/settings.php
+      notify: restart apache
+      become_user: www-data
