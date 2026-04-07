@@ -1,6 +1,7 @@
 ---
-- hosts: all
+- hosts: app
   become: yes
+  remote_user: vagrant
 
   vars_files:
     - vars.yaml
@@ -21,8 +22,8 @@
           - python3-apt
           - python3-pycurl
 
-    - name: Add ondrej repository for later versions of PHP.
-      apt_repository: repo='ppa:ondrej/php' update_cache=yes
+    # - name: Add ondrej repository for later versions of PHP.
+    #   deb822_repository: repo='ppa:ondrej/php' update_cache=yes
 
     - name: "Install Apache, MySQL, PHP, and other dependencies."
       apt:
@@ -34,21 +35,21 @@
           - unzip
           - sendmail
           - apache2
-          - php8.2-common
-          - php8.2-cli
-          - php8.2-dev
-          - php8.2-gd
-          - php8.2-curl
-          - php8.2-opcache
-          - php8.2-xml
-          - php8.2-mbstring
-          - php8.2-pdo
-          - php8.2-mysql
-          - php8.2-apcu
-          - libpcre3-dev
-          - libapache2-mod-php8.2
+          - php-common
+          - php-cli
+          - php-dev
+          - php-gd
+          - php-curl
+          - php-opcache
+          - php-xml
+          - php-mbstring
+          - php-pdo
+          - php-mysql
+          - php-apcu
+          - libpcre2-dev
+          - libapache2-mod-php
           - python3-mysqldb
-          - mysql-server
+          - mariadb-server
 
     - name: "Start Apache, Mysql and PHP"
       service: "name={{ item }} state=started enabled=yes"
