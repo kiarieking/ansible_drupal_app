@@ -4,7 +4,7 @@
   remote_user: vagrant
 
   vars_files:
-    - vars.yaml
+    - vars.yml
 
   pre_tasks:
     - name: Update cache if neccessary.
